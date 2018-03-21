@@ -5,4 +5,4 @@
  - PascalCase
  - Singular
  - PK => TableNameId
- - FK => ReferencedKeyId
+ - FK => fk_LocalTable_RemoteTable_RemoteId
