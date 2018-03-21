@@ -12,11 +12,11 @@ connection = pymysql.connect(host='localhost',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
-user_fmt = "INSERT INTO KOJOJO.User (UserName, PasswordHash, RegistrationDate) VALUES ('{}', '{}', '{}');"
+user_fmt = "INSERT INTO KOJOJO.User (UserName, PasswordHash, RegistrationDate, Email) VALUES ('{}', '{}', '{}', '{}');"
 cat_fmt  = "INSERT INTO KOJOJO.Category (Type) VALUES (%s);"
 
 usernames = [line.strip() for line in open('usernames.txt').readlines()]
-categories = [line.strip() for line in open('categories.txt').readlines()]
+categories = set([line.strip().split('>')[-1].strip() for line in open('categories.txt').readlines()])
 
 try:
     with connection.cursor() as cursor:
@@ -25,14 +25,15 @@ try:
         for username in usernames:
             h = pwhash('changeme')
             t = datetime.date(2017, randint(1, 12), randint(1, 28))
-            stmt = user_fmt.format(username, h, t)
+            stmt = user_fmt.format(username, h, t, "{}@hotmail.com".format(username))
             print("Inserting:", stmt)
             cursor.execute(stmt)
         for category in categories:
-            arr = category.split('>')
-            cat = arr[-1].strip()
-            print("Inserting:", cat)
-            cursor.execute(cat_fmt, (cat,))
+            print("Inserting:", category)
+            try:
+                cursor.execute(cat_fmt, (category,))
+            except:
+                pass
     connection.commit()
 finally:
     cursor.close()
