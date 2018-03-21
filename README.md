@@ -5,4 +5,5 @@ Projet de cours
 
  - MySQL Workbench (diagrammes relationnels)
  - [ClickCharts](http://www.nchsoftware.com/chart/index.html) (diagrammes entité-relation)
+ - Visual Paradigm (diagrammes de cas d'utilisations)
 
