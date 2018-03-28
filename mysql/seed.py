@@ -12,7 +12,7 @@ connection = pymysql.connect(host='localhost',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
-user_fmt = "INSERT INTO KOJOJO.User (UserName, PasswordHash, RegistrationDate, Email) VALUES ('{}', '{}', '{}', '{}');"
+user_fmt = "INSERT INTO KOJOJO.User (UserName, PasswordHash, RegistrationDate, Email, Phone) VALUES ('{}', '{}', '{}', '{}', '');"
 cat_fmt  = "INSERT INTO KOJOJO.Category (Type) VALUES (%s);"
 
 usernames = [line.strip() for line in open('usernames.txt').readlines()]
