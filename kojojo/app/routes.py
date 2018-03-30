@@ -127,3 +127,16 @@ def change_password():
         flash('Mot de passe actuel incorrect')
 
     return render_template('change_password.html', title='Modifier son mot de passe', form=form)
+
+@app.route('/User/Delete', methods=['GET'])
+def delete_account():
+    row = get_user()
+    with db.cursor() as cursor:
+        cursor.execute("DELETE FROM User "
+                       "WHERE UserId = %s",
+                       (row["UserId"]),)
+    db.commit()
+    if 'session_id' in session:
+        del session['session_id']
+
+    return redirect('/')
