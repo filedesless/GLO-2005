@@ -2,7 +2,7 @@ from flask_wtf.csrf import CSRFError
 
 from app import app
 from flask import render_template, flash, redirect, make_response, session
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, EditAccountForm, ChangePassword
 from werkzeug.security import check_password_hash, generate_password_hash
 from uuid import uuid4 as guid
 import pymysql.cursors
@@ -14,6 +14,17 @@ db = pymysql.connect(host='localhost',
                      db='KOJOJO',
                      charset='utf8mb4',
                      cursorclass=pymysql.cursors.DictCursor)
+
+def get_user():
+    if "session_id" in session:
+        with db.cursor() as cursor:
+            cursor.execute("SELECT UserId FROM Session WHERE SessionId = %s", (session["session_id"],))
+            row = cursor.fetchone()
+            if row is not None:
+                cursor.execute("SELECT UserId, UserName, Email, Phone, PasswordHash, RegistrationDate FROM User WHERE UserId = %s", (row["UserId"],))
+                row = cursor.fetchone()
+                return row
+    return None
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
@@ -59,30 +70,60 @@ def logout():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        email, usr, pwd, phone = form.email.data, form.username.data, form.password.data, form.phone.data
-        valid = True
-        if len(email) > 45:
-            flash('Le courriel ne peut pas faire plus de 45 caractères')
-            valid = False
-        if len(usr) < 4 or len(usr) > 45:
-            flash('Le nom d\'utilisateur doit être entre 4 et 45 caractères')
-            valid = False
-        if len(pwd) < 6:
-            flash('Le mot de passe doit faire plus de 6 caractères')
-            valid = False
-        if len(phone) > 45:
-            flash('Le téléphone doit faire moins de 45 caractères')
-            valid = False
+        email, user, pwd, phone = form.email.data, form.username.data, form.password.data, form.phone.data
 
-        if valid:
-            pw_hash = generate_password_hash(pwd)
-            with db.cursor() as cursor:
-                cursor.execute("INSERT INTO User (UserName, PasswordHash, RegistrationDate, Email, Phone) "
-                               "VALUES (%s, %s, CURRENT_DATE(), %s, %s)",
-                               (usr, pw_hash, email, phone))
-            db.commit()
-            flash('Inscription réussie, vous pouvez maintenant vous connecter')
-            return redirect('/')
+        pw_hash = generate_password_hash(pwd)
+        with db.cursor() as cursor:
+            cursor.execute("INSERT INTO User (UserName, PasswordHash, RegistrationDate, Email, Phone) "
+                           "VALUES (%s, %s, CURRENT_DATE(), %s, %s)",
+                           (user, pw_hash, email, phone))
+        db.commit()
+        flash('Inscription réussie, vous pouvez maintenant vous connecter')
+        return redirect('/')
 
     return render_template('register.html', title='Inscription', form=form)
 
+@app.route('/User/Profile', methods=['GET', 'POST'])
+def edit_account():
+    form = EditAccountForm()
+    row = get_user()
+
+    if form.validate_on_submit() and row is not None:
+        user, email, phone = form.username.data, form.email.data, form.phone.data
+        with db.cursor() as cursor:
+            cursor.execute("UPDATE User "
+                           "SET UserName = %s, Email = %s, Phone = %s "
+                           "WHERE UserId = %s",
+                           (user, email, phone, row["UserId"]))
+        db.commit()
+        flash('Mise à jour du profile réussie')
+        return redirect('/')
+
+    if row is not None:
+        form.username.data = row["UserName"]
+        form.email.data = row["Email"]
+        form.confirm_email.data = row["Email"]
+        form.phone.data = row["Phone"]
+        return render_template('edit_account.html', title='Profile', form=form)
+
+    return render_template('edit_account.html', title='Profile', form=form)
+
+@app.route('/User/Password', methods=['GET', 'POST'])
+def change_password():
+    form = ChangePassword()
+    row = get_user()
+
+    if form.validate_on_submit():
+        old_pwd, new_pwd = form.old_password.data, form.password.data
+        if check_password_hash(row["PasswordHash"], old_pwd):
+            with db.cursor() as cursor:
+                cursor.execute("UPDATE User "
+                               "SET PasswordHash = %s "
+                               "WHERE UserId = %s",
+                               (generate_password_hash(new_pwd), row["UserId"]))
+            db.commit()
+            flash('Mise à jour du mot de passe réussie')
+            return redirect('/')
+        flash('Mot de passe actuel incorrect')
+
+    return render_template('change_password.html', title='Modifier son mot de passe', form=form)

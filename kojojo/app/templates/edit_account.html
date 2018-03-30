@@ -26,20 +26,6 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.password.label }}<br>
-            {{ form.password(required=true, class_='w3-input') }}
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.confirm_password.label }}<br>
-            {{ form.confirm_password(required=true, class_='w3-input') }}
-            {% for error in form.confirm_password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
             {{ form.phone.label }} <span class="w3-tiny">optionnel</span><br>
             {{ form.phone(class_='w3-input') }}
             {% for error in form.phone.errors %}
@@ -48,4 +34,8 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
+
+    <hr />
+
+    <a href="{{ url_for('change_password') }}">Changer son mot de passe</a>
 {% endblock %}
