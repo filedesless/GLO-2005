@@ -27,8 +27,18 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">À propos</a></li>
-                    <li><a href="/User/SignIn">Connexion</a></li>
                 </ul>
+                {% if not session['session_id'] %}
+                    <ul class="nav navbar-nav w3-right">
+                        <li><a href="/User/Register">Inscription</a></li>
+                        <li><a href="/User/SignIn">Connexion</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="nav navbar-nav w3-right">
+                        <li><a href="/User/Profile">Profile</a></li>
+                        <li><a href="/User/SignOut">Déconnexion</a></li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </nav>
