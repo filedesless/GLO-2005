@@ -1,40 +1,10 @@
-from flask_wtf.csrf import CSRFError
-
 from app import app
-from flask import render_template, flash, redirect, make_response, session
+from flask import render_template, flash, redirect, session
+from app.Model import db, get_user
 from app.forms import LoginForm, RegisterForm, EditAccountForm, ChangePassword
 from werkzeug.security import check_password_hash, generate_password_hash
 from uuid import uuid4 as guid
-import pymysql.cursors
 
-
-db = pymysql.connect(host='localhost',
-                     user='kojojo',
-                     password='kojojo',
-                     db='KOJOJO',
-                     charset='utf8mb4',
-                     cursorclass=pymysql.cursors.DictCursor)
-
-def get_user():
-    if "session_id" in session:
-        with db.cursor() as cursor:
-            cursor.execute("SELECT UserId FROM Session WHERE SessionId = %s", (session["session_id"],))
-            row = cursor.fetchone()
-            if row is not None:
-                cursor.execute("SELECT UserId, UserName, Email, Phone, PasswordHash, RegistrationDate FROM User WHERE UserId = %s", (row["UserId"],))
-                row = cursor.fetchone()
-                return row
-    return None
-
-@app.errorhandler(CSRFError)
-def handle_csrf_error(e):
-    flash(e.description)
-    return redirect('/')
-
-@app.route('/')
-def index():
-    flash(session)
-    return render_template('base.html', title='Index')
 
 @app.route('/User/SignIn', methods=['GET', 'POST'])
 def login():
