@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Email, length
-from wtforms.fields.html5 import TelField, EmailField
+from wtforms.fields.html5 import TelField, EmailField, DecimalField
 
 
 class LoginForm(FlaskForm):
@@ -64,4 +64,21 @@ class ChangePassword(FlaskForm):
         length(min=6, message='Le mot de passe doit faire au moins 6 caractère')
     ])
     confirm_password = PasswordField('Confirmation du nouveau mot de passe')
+    submit = SubmitField('Envoyer')
+
+class NewProductForm(FlaskForm):
+    name = StringField('Nom du produit', validators=[
+        DataRequired(),
+        length(max=45, message='Le nom du produit ne doit pas faire plus de 45 caractères')
+    ])
+    price = DecimalField('Prix du produit', validators=[DataRequired()])
+    description = StringField('Description du produit', validators=[
+        DataRequired(),
+        length(max=300, message='La description du produit ne doit pas faire plus de 300 caractères')
+    ])
+    category = SelectField('Catégorie du produit', validators=[DataRequired()])
+    town = StringField('Ville où se trouve le produit', validators=[
+        DataRequired(),
+        length(max=45, message='La ville ne doit pas faire plus de 45 caractères')
+    ])
     submit = SubmitField('Envoyer')

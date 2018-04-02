@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, flash, redirect, session
 from app.Model import db, get_user
+from app.authorize import authorize
 from app.forms import LoginForm, RegisterForm, EditAccountForm, ChangePassword
 from werkzeug.security import check_password_hash, generate_password_hash
 from uuid import uuid4 as guid
@@ -25,6 +26,7 @@ def login():
 
     return render_template('login.html', title='Connexion', form=form)
 
+@authorize
 @app.route('/User/SignOut', methods=['GET'])
 def logout():
     if 'session_id' in session:
@@ -53,6 +55,7 @@ def register():
 
     return render_template('register.html', title='Inscription', form=form)
 
+@authorize
 @app.route('/User/Profile', methods=['GET', 'POST'])
 def edit_account():
     form = EditAccountForm()
@@ -78,6 +81,7 @@ def edit_account():
 
     return render_template('edit_account.html', title='Profile', form=form)
 
+@authorize
 @app.route('/User/Password', methods=['GET', 'POST'])
 def change_password():
     form = ChangePassword()
@@ -98,6 +102,7 @@ def change_password():
 
     return render_template('change_password.html', title='Modifier son mot de passe', form=form)
 
+@authorize
 @app.route('/User/Delete', methods=['GET'])
 def delete_account():
     row = get_user()

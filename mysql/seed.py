@@ -16,7 +16,7 @@ user_fmt = "INSERT INTO KOJOJO.User (UserName, PasswordHash, RegistrationDate, E
 cat_fmt  = "INSERT INTO KOJOJO.Category (Type) VALUES (%s);"
 
 usernames = [line.strip() for line in open('usernames.txt').readlines()]
-categories = set([line.strip().split('>')[-1].strip() for line in open('categories.txt').readlines()])
+categories = [line.strip().split('>')[-1].strip() for line in open('categories.txt').readlines()]
 
 try:
     with connection.cursor() as cursor:

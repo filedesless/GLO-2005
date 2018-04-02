@@ -11,4 +11,4 @@ def handle_csrf_error(e):
     flash(e.description)
     return redirect('/')
 
-from app.Controllers import HomeController, UserController
+from app.Controllers import HomeController, UserController, ProductController
