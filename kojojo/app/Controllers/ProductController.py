@@ -5,9 +5,11 @@ from app.forms import NewProductForm
 from app.authorize import authorize
 
 
-@authorize
 @app.route('/Product/Add', methods=['GET', 'POST'])
 def add_product():
+    if not authorize():
+        return redirect('/User/SignIn')
+
     form = NewProductForm()
 
     with db.cursor() as cursor:

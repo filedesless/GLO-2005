@@ -26,9 +26,11 @@ def login():
 
     return render_template('login.html', title='Connexion', form=form)
 
-@authorize
 @app.route('/User/SignOut', methods=['GET'])
 def logout():
+    if not authorize():
+        return redirect('/User/SignIn')
+
     if 'session_id' in session:
         with db.cursor() as cursor:
             cursor.execute("DELETE FROM Session WHERE SessionId = %s", (session["session_id"],))
@@ -55,9 +57,11 @@ def register():
 
     return render_template('register.html', title='Inscription', form=form)
 
-@authorize
 @app.route('/User/Profile', methods=['GET', 'POST'])
 def edit_account():
+    if not authorize():
+        return redirect('/User/SignIn')
+
     form = EditAccountForm()
     row = get_user()
 
@@ -81,9 +85,11 @@ def edit_account():
 
     return render_template('edit_account.html', title='Profile', form=form)
 
-@authorize
 @app.route('/User/Password', methods=['GET', 'POST'])
 def change_password():
+    if not authorize():
+        return redirect('/User/SignIn')
+
     form = ChangePassword()
     row = get_user()
 
@@ -102,9 +108,11 @@ def change_password():
 
     return render_template('change_password.html', title='Modifier son mot de passe', form=form)
 
-@authorize
 @app.route('/User/Delete', methods=['GET'])
 def delete_account():
+    if not authorize():
+        return redirect('/User/SignIn')
+
     row = get_user()
     with db.cursor() as cursor:
         cursor.execute("DELETE FROM User "
