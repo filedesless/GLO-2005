@@ -19,4 +19,5 @@ def get_user():
                                "FROM User WHERE UserId = %s", (row["UserId"],))
                 row = cursor.fetchone()
                 return row
+            del session["session_id"]
     return None
