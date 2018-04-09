@@ -58,7 +58,15 @@ def list_products():
 
 @app.route('/Product/<int:id>', methods=['GET'])
 def show_product(id):
-    pass
+    with db.cursor() as cursor:
+        cursor.execute("SELECT ProductName, Price, Description, Date, TownName, Type, UserName, Email, Phone FROM Product "
+                       "INNER JOIN User ON Product.UserId = User.UserId "
+                       "INNER JOIN Town ON Product.TownId = Town.TownId "
+                       "INNER JOIN Category ON Product.CategoryId = Category.CategoryId "
+                       "WHERE ProductId = %s", (id,))
+        product = cursor.fetchone()
+
+    return render_template('show_product.html', title='Accueil', product=product)
 
 @app.route('/Product/Edit/<int:id>', methods=['GET'])
 def edit_product(id):

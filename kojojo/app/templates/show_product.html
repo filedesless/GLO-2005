@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ product["ProductName"] }}</h1>
+
+    <p>Prix: {{ product["Price"] }}$</p>
+    <p>Description: {{ product["Description"] }}</p>
+    <p>Date de mise en vente: {{ product["Date"] }}</p>
+    <p>Vendu par: {{ product["UserName"] }}</p>
+    {% if product["Phone"] %}
+        <p>Numéro de téléphone: {{ product["Phone"] }}</p>
+    {% endif %}
+    <p>Email: {{ product["Email"] }}</p>
+    <p>Catégorie: {{ product["Type"] }}</p>
+    <p>Ville: {{ product["TownName"] }}</p>
+
+{% endblock %}
