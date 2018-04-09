@@ -14,4 +14,22 @@
     <p>Catégorie: {{ product["Type"] }}</p>
     <p>Ville: {{ product["TownName"] }}</p>
 
+    <br /><br /><br /><br />
+
+    {% if is_author %}
+        <a href="/Product/Edit/{{ product["ProductId"] }}">Mettre à jour l'annonce</a> <br /><br />
+        <a href="#" onclick="confirmDelete()" style="color: red">Supprimer cette annonce</a>
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmDelete() {
+    var ask=confirm("Voulez-vous vraiment supprimer cette annonce?\nCette action est irréversible.");
+    if(ask){
+      window.location="/Product/Remove/{{ product["ProductId"] }}";
+    }
+}
+</script>
 {% endblock %}
