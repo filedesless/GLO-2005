@@ -4,5 +4,4 @@ from app import app
 
 @app.route('/')
 def index():
-    flash(session)
     return render_template('base.html', title='Index')

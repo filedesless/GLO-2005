@@ -28,6 +28,11 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/">À propos</a></li>
                 </ul>
+                <form class="navbar-form navbar-left" action="/Product/Search/" onsubmit="return search();">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="query" placeholder="Rechercher" id="search_input">
+                    </div>
+                </form>
                 {% if not session['session_id'] %}
                     <ul class="nav navbar-nav w3-right">
                         <li><a href="/User/Register">Inscription</a></li>
@@ -35,6 +40,7 @@
                     </ul>
                 {% else %}
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/Product/Add">Vendre un produit</a></li>
                         <li><a href="/User/Profile">Profile</a></li>
                         <li><a href="/User/SignOut">Déconnexion</a></li>
                     </ul>
@@ -66,5 +72,14 @@
     <script src="{{ url_for('static', filename='js/jquery-2.2.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     {% block scripts %}{% endblock %}
+
+    <script>
+        function search() {
+            var s = document.getElementById('search_input');
+            var url = '/Product/Search/' + s.value;
+            document.location.assign(url);
+            return false;
+        }
+    </script>
 </body>
 </html>

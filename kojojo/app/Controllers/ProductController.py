@@ -42,3 +42,24 @@ def add_product():
             flash('Veuillez choisir une catégorie')
 
     return render_template('add_product.html', title='Nouveau produit', form=form)
+
+@app.route('/Product/Search/<query>', methods=['GET'])
+def search_product(query: str):
+    pass
+
+@app.route('/Product/List', methods=['GET'])
+def list_products():
+    pass
+
+@app.route('/Product/<int:id>', methods=['GET'])
+def show_product(id):
+    pass
+
+@app.route('/Product/Edit/<int:id>', methods=['GET'])
+def edit_product(id):
+    pass
+
+@app.route('/Product/Remove/<int:id>', methods=['GET'])
+def remove_product(id):
+    pass
+
