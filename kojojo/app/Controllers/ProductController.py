@@ -44,7 +44,15 @@ def add_product():
 
 @app.route('/Product/Search/<query>', methods=['GET'])
 def search_product(query: str):
-    pass
+    products = []
+
+    with db.cursor() as cursor:
+        cursor.execute("SELECT ProductId, ProductName, Price FROM Product "
+                       "WHERE ProductName LIKE %s "        
+                       "ORDER BY Date DESC", ("%{}%".format(query),))
+        products = cursor.fetchall()
+
+    return render_template('list_product.html', products=products, title="Liste des correspondant à la recherche")
 
 @app.route('/Product/List', methods=['GET'])
 def list_products():
@@ -54,7 +62,7 @@ def list_products():
         cursor.execute("SELECT ProductId, ProductName, Price FROM Product ORDER BY Date DESC")
         products = cursor.fetchall()
 
-    return render_template('list_product.html', title='Accueil', products=products)
+    return render_template('list_product.html', products=products, title="Liste des articles publiés")
 
 @app.route('/Product/<int:id>', methods=['GET'])
 def show_product(id):
