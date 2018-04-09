@@ -76,7 +76,7 @@ class NewProductForm(FlaskForm):
         DataRequired(),
         length(max=300, message='La description du produit ne doit pas faire plus de 300 caractères')
     ])
-    category = SelectField('Catégorie du produit', validators=[DataRequired()])
+    category = SelectField('Catégorie du produit')
     town = StringField('Ville où se trouve le produit', validators=[
         DataRequired(),
         length(max=45, message='La ville ne doit pas faire plus de 45 caractères')
