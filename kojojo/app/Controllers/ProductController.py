@@ -48,7 +48,13 @@ def search_product(query: str):
 
 @app.route('/Product/List', methods=['GET'])
 def list_products():
-    pass
+    products = []
+
+    with db.cursor() as cursor:
+        cursor.execute("SELECT ProductId, ProductName, Price FROM Product ORDER BY Date DESC")
+        products = cursor.fetchall()
+
+    return render_template('list_product.html', title='Accueil', products=products)
 
 @app.route('/Product/<int:id>', methods=['GET'])
 def show_product(id):
