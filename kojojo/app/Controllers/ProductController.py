@@ -26,18 +26,17 @@ def add_product():
                 row = cursor.fetchone()
                 if row is None:
                     cursor.execute("INSERT INTO Town (TownName) VALUES (%s)", (town,))
-                    user = get_user()
-                    cursor.execute("INSERT INTO Product (ProductName, Price, Description, Date, CategoryId, UserId, TownId) "
-                                   "VALUES (%s, %s, %s, NOW(), %s, %s, "
-                                   "(SELECT TownId FROM Town WHERE TownName = %s))", (form.name.data,
-                                                                                      form.price.data,
-                                                                                      form.description.data,
-                                                                                      form.category.data,
-                                                                                      user["UserId"],
-                                                                                      town))
-                    db.commit()
-                    flash('hourra!')
-                    return redirect('/')
+                user = get_user()
+                cursor.execute("INSERT INTO Product (ProductName, Price, Description, Date, CategoryId, UserId, TownId) "
+                               "VALUES (%s, %s, %s, NOW(), %s, %s, "
+                               "(SELECT TownId FROM Town WHERE TownName = %s))", (form.name.data,
+                                                                                  form.price.data,
+                                                                                  form.description.data,
+                                                                                  form.category.data,
+                                                                                  user["UserId"],
+                                                                                  town))
+                db.commit()
+                return redirect('/')
         else:
             flash('Veuillez choisir une catégorie')
 

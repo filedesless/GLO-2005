@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Articles récemment publiés</h1>
+
+    <ul class="w3-ul w3-border">
+    {% for product in products %}
+        <li><a href="/Product/{{ product['ProductId'] }}">{{ product["ProductName"] }}</a> <span class="w3-right">{{ product["Price"] }}$</span></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
