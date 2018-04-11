@@ -87,6 +87,19 @@ def product_by_category(id: int):
 
     return View('list_product.html', products=products, title="Liste des correspondant à la recherche")
 
+@app.route('/Product/MyProducts/', methods=['GET'])
+def view_own_products():
+    if not authorize():
+        return redirect('/User/SignIn')
+
+    with db.cursor() as cursor:
+        cursor.execute("SELECT ProductId, ProductName, Price FROM Product "
+                       "WHERE Product.UserId = %s "        
+                       "ORDER BY Date DESC", (get_user()["UserId"],))
+        products = cursor.fetchall()
+
+    return View('list_product.html', products=products, title="Liste des correspondant à la recherche")
+
 
 @app.route('/Product/List', methods=['GET'])
 def list_products():
