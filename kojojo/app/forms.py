@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField
-from wtforms.validators import DataRequired, EqualTo, Email, length
+from wtforms.validators import DataRequired, EqualTo, Email, length, NumberRange
 from wtforms.fields.html5 import TelField, EmailField, DecimalField
 
 
@@ -71,7 +71,10 @@ class NewProductForm(FlaskForm):
         DataRequired(),
         length(max=45, message='Le nom du produit ne doit pas faire plus de 45 caractères')
     ])
-    price = DecimalField('Prix du produit', validators=[DataRequired()])
+    price = DecimalField('Prix du produit', validators=[
+        DataRequired(),
+        NumberRange(min=-999999999, max=999999999, message="Valeur invalide")
+    ])
     description = StringField('Description du produit', validators=[
         DataRequired(),
         length(max=300, message='La description du produit ne doit pas faire plus de 300 caractères')
