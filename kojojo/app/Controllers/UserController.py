@@ -19,7 +19,6 @@ def login():
                 cursor.execute("INSERT INTO Session (SessionId, UserId) VALUES (%s, %s)", (session_id, row["UserId"]))
                 db.commit()
                 session["session_id"] = session_id
-                flash('Connexion réussie pour l\'utilisateur {}'.format(form.email.data))
                 return redirect('/')
             else:
                 flash('Tentative de connection incorrecte')
@@ -37,7 +36,6 @@ def logout():
         db.commit()
         del session['session_id']
 
-    flash('Déconnexion réussie')
     return redirect('/')
 
 @app.route('/User/Register', methods=['GET', 'POST'])
