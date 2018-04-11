@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <p>
             {{ form.name.label }}<br>
@@ -36,6 +36,13 @@
             {{ form.town.label }}<br>
             {{ form.town(required=true, class_='w3-input') }}
             {% for error in form.town.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.image.label }}<br>
+            {{ form.image(required=false, class_='w3-input') }}
+            {% for error in form.image.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>

@@ -14,6 +14,14 @@
     <p>Catégorie: {{ product["Type"] }}</p>
     <p>Ville: {{ product["TownName"] }}</p>
 
+    <br /><br />
+
+    {% if product["FileName"] %}
+        <img src="{{ url_for('static', filename='uploads/' + product["FileName"]) }}" class="w3-bar-item w3-image">
+    {% else %}
+        <img src="{{ url_for('static', filename='noimg.jpg') }}" class="w3-bar-item w3-image">
+    {% endif %}
+
     <br /><br /><br /><br />
 
     {% if is_author %}

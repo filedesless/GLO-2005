@@ -3,9 +3,18 @@
 {% block content %}
     <h1>{{ title }}</h1>
 
-    <ul class="w3-ul w3-border">
+    <ul class="w3-ul w3-border w3-bordered">
     {% for product in products %}
-        <li><a href="/Product/{{ product['ProductId'] }}">{{ product["ProductName"] }}</a> <span class="w3-right">{{ product["Price"] }}$</span></li>
+        <li>
+            <a href="/Product/{{ product['ProductId'] }}">
+                {% if product["FileName"] %}
+                    <img src="{{ url_for('static', filename='uploads/' + product["FileName"]) }}" class="w3-bar-item" style="width:5em;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='noimg.jpg') }}" class="w3-bar-item" style="width:5em;">
+                {% endif %}
+                {{ product["ProductName"] }}
+            </a> <span class="w3-right">{{ product["Price"] }}$</span>
+        </li>
     {% endfor %}
     </ul>
 {% endblock %}

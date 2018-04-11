@@ -7,3 +7,4 @@ class Config(object):
     DB_USER = 'kojojo'
     DB_PASS = 'kojojo'
     DB_NAME = 'KOJOJO'
+    UPLOAD_FILE = 'uploads'

@@ -49,6 +49,12 @@
         </div>
     </nav>
 
+    <div class="w3-sidebar w3-bar-block" style="width:22%; top:50px;">
+        {% for category in categories %}
+            <a href="/Product/FromCategory/{{ category["CategoryId"] }}" class="w3-bar-item w3-button">{{ category["Type"] }}</a>
+        {% endfor %}
+    </div>
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -59,8 +65,8 @@
         {% endif %}
     {% endwith %}
 
-    <div class="container body-content">
-        <div class="w3-content w3-margin-top" style="min-height: 80vh;">
+    <div style="margin-left: 25%; margin-right:2em;">
+        <div style="min-height: 80vh;">
             {% block content %}{% endblock %}
         </div>
         <hr />

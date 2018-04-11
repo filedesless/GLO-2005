@@ -7,6 +7,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from uuid import uuid4 as guid
 
 
+def View(template, **kwargs):
+    with db.cursor() as cursor:
+        cursor.execute("SELECT CategoryId, Type FROM Category")
+        categories = cursor.fetchall()
+    return render_template(template, categories=categories, **kwargs)
+
 @app.route('/User/SignIn', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -23,7 +29,7 @@ def login():
             else:
                 flash('Tentative de connection incorrecte')
 
-    return render_template('login.html', title='Connexion', form=form)
+    return View('login.html', title='Connexion', form=form)
 
 @app.route('/User/SignOut', methods=['GET'])
 def logout():
@@ -53,7 +59,7 @@ def register():
         flash('Inscription réussie, vous pouvez maintenant vous connecter')
         return redirect('/')
 
-    return render_template('register.html', title='Inscription', form=form)
+    return View('register.html', title='Inscription', form=form)
 
 @app.route('/User/Profile', methods=['GET', 'POST'])
 def edit_account():
@@ -79,9 +85,9 @@ def edit_account():
         form.email.data = row["Email"]
         form.confirm_email.data = row["Email"]
         form.phone.data = row["Phone"]
-        return render_template('edit_account.html', title='Profile', form=form)
+        return View('edit_account.html', title='Profile', form=form)
 
-    return render_template('edit_account.html', title='Profile', form=form)
+    return View('edit_account.html', title='Profile', form=form)
 
 @app.route('/User/Password', methods=['GET', 'POST'])
 def change_password():
@@ -104,7 +110,7 @@ def change_password():
             return redirect('/')
         flash('Mot de passe actuel incorrect')
 
-    return render_template('change_password.html', title='Modifier son mot de passe', form=form)
+    return View('change_password.html', title='Modifier son mot de passe', form=form)
 
 @app.route('/User/Delete', methods=['GET'])
 def delete_account():

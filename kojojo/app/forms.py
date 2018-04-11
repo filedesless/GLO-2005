@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, EqualTo, Email, length, NumberRange
 from wtforms.fields.html5 import TelField, EmailField, DecimalField
 
@@ -73,7 +74,7 @@ class NewProductForm(FlaskForm):
     ])
     price = DecimalField('Prix du produit', validators=[
         DataRequired(),
-        NumberRange(min=-999999999, max=999999999, message="Valeur invalide")
+        NumberRange(min=0, max=99999999, message="Valeur invalide")
     ])
     description = StringField('Description du produit', validators=[
         DataRequired(),
@@ -83,5 +84,8 @@ class NewProductForm(FlaskForm):
     town = StringField('Ville où se trouve le produit', validators=[
         DataRequired(),
         length(max=45, message='La ville ne doit pas faire plus de 45 caractères')
+    ])
+    image = FileField('Photo du produit', validators=[
+        FileAllowed(['jpg', 'jpeg', 'png'], 'Invalid extension')
     ])
     submit = SubmitField('Envoyer')
