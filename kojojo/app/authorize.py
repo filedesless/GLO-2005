@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from app.Model import db, get_user
 from flask import redirect
 

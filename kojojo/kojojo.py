@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from app import app
 from flask_wtf.csrf import CSRFProtect
 

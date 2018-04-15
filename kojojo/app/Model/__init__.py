@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import pymysql
 from flask import session
 from app import Config

@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from app import app
 from flask import render_template, flash, redirect, session
 from app.Model import db, get_user
