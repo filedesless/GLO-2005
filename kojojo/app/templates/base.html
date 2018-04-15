@@ -55,18 +55,19 @@
         {% endfor %}
     </div>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
-
     <div style="margin-left: 25%; margin-right:2em;">
         <div style="min-height: 80vh;">
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+
             {% block content %}{% endblock %}
         </div>
         <hr />
