@@ -4,7 +4,7 @@ from app.Model import db, get_user
 from flask import redirect
 
 
-def authorize() -> bool:
+def authorize():
     return get_user() is not None
 
 if __name__ == "__main__":
