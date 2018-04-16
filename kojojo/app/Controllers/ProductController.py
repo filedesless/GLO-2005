@@ -69,7 +69,7 @@ def add_product():
     return View('add_product.html', title='Nouveau produit', form=form)
 
 @app.route('/Product/Search/<query>', methods=['GET'])
-def search_product(query: str):
+def search_product(query):
     with db.cursor() as cursor:
         cursor.execute("SELECT ProductId, ProductName, Price FROM Product "
                        "WHERE ProductName LIKE %s "        
@@ -79,7 +79,7 @@ def search_product(query: str):
     return View('list_product.html', products=products, title="Liste des correspondant à la recherche")
 
 @app.route('/Product/FromCategory/<id>', methods=['GET'])
-def product_by_category(id: int):
+def product_by_category(id):
     with db.cursor() as cursor:
         cursor.execute("SELECT ProductId, ProductName, Price FROM Product "
                        "WHERE Product.CategoryId = %s "        
